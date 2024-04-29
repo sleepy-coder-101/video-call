@@ -1,0 +1,27 @@
+{
+  "apikey": "37c2dbf8-bac1-4b55-a636-5e7f43afde7c",
+  "permissions": [
+    "allow_join"
+  ],
+  "version": 2,
+  "roles": [
+    "rtc"
+  ],
+  "iat": 1713730613,
+  "exp": 1713737813
+}
+
+this is my self made token
+
+
+{
+    "apikey": "37c2dbf8-bac1-4b55-a636-5e7f43afde7c",
+    "permissions": [
+      "allow_join"
+    ],
+    "iat": 1713685361,
+    "exp": 1714290161
+  }
+
+this is the generated token
+
