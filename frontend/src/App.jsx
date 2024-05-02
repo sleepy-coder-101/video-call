@@ -1,4 +1,5 @@
 import { MeetingProvider, MeetingConsumer } from "@videosdk.live/react-sdk";
+import { Outlet } from "react-router-dom";
 
 import { useAppState } from "./context/AppStateContext";
 
@@ -8,18 +9,16 @@ import MeetingSummary from "./pages/MeetingSummary";
 
 function App() {
   const { meetingId, authToken, meetingEnded } = useAppState();
-  console.log("Meeting id: ", meetingId);
-  console.log("Auth token: ", authToken);
 
-  if (meetingEnded) {
-    return <MeetingSummary />;
-  }
+  // if (meetingEnded) {
+  //   return <MeetingSummary />;
+  // }
 
   return authToken && meetingId ? (
     <MeetingProvider
       config={{
         meetingId,
-        micEnabled: true,
+        micEnabled: false,
         webcamEnabled: true,
         name: "Monirul",
       }}
@@ -28,8 +27,43 @@ function App() {
       <MeetingConsumer>{() => <MeetingView />}</MeetingConsumer>
     </MeetingProvider>
   ) : (
-    <HomeScreen />
+    <Outlet />
   );
+
+  // return authToken && meetingId ? (
+  //   <MeetingProvider
+  //     config={{
+  //       meetingId,
+  //       micEnabled: false,
+  //       webcamEnabled: true,
+  //       name: "Monirul",
+  //     }}
+  //     token={authToken}
+  //   >
+  //     <MeetingConsumer>{() => <MeetingView />}</MeetingConsumer>
+  //   </MeetingProvider>
+  // ) : meetingEnded ? (
+  //   <MeetingSummary />
+  // ) : (
+  //   <HomeScreen />
+  //   // <Outlet />
+  // );
+
+  // return authToken && meetingId ? (
+  //   <MeetingProvider
+  //     config={{
+  //       meetingId,
+  //       micEnabled: true,
+  //       webcamEnabled: true,
+  //       name: "Monirul",
+  //     }}
+  //     token={authToken}
+  //   >
+  //     <MeetingConsumer>{() => <MeetingView />}</MeetingConsumer>
+  //   </MeetingProvider>
+  // ) : (
+  //   <HomeScreen />
+  // );
 }
 
 export default App;

@@ -4,10 +4,11 @@ import { useMeeting } from "@videosdk.live/react-sdk";
 import { useAppState } from "../context/AppStateContext";
 import ParticipantView from "./ParticipantView";
 import ControlsView from "./ControlsView";
+import { useNavigate } from "react-router-dom";
 
 const MeetingView = () => {
+  const navigate = useNavigate();
   const [joined, setJoined] = useState(null);
-  const [totalFaceTime, setTotalFaceTime] = useState(0);
 
   const { meetingId, onMeetingLeave } = useAppState();
 
@@ -17,6 +18,7 @@ const MeetingView = () => {
     },
     onMeetingLeft: () => {
       onMeetingLeave();
+      navigate("/summary");
     },
   });
 
@@ -37,7 +39,6 @@ const MeetingView = () => {
               <ParticipantView
                 participantId={participantId}
                 key={participantId}
-                onFaceTimeUpdate={setTotalFaceTime}
               />
             ))}
           </div>

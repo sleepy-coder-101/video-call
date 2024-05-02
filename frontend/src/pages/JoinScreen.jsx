@@ -96,13 +96,17 @@ const JoinScreen = () => {
   };
 
   /* From here */
-  const { getMeetingId, setMeetingId } = useAppState();
+  const { getAuthToken, getMeetingId, setMeetingId, isAuthenticated } =
+    useAppState();
 
-  const onCreateMeeting = () => {
-    getMeetingId();
+  const onCreateMeeting = async () => {
+    await getAuthToken();
+    await getMeetingId();
   };
 
-  const onJoinMeeting = () => {
+  const onJoinMeeting = async () => {
+    await getAuthToken();
+
     const inputMeetingId = meetingIdRef.current.value;
     setMeetingId(inputMeetingId);
   };

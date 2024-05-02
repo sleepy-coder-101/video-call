@@ -1,22 +1,31 @@
 import { createContext, useContext, useState } from "react";
 
-import { createMeeting, fetchMeetingDuration, fetchToken } from "../api";
+import { createMeeting, fetchToken } from "../api";
 
 // Create context
 const AppStateContext = createContext({
-  meetingId: null,
   authToken: null,
+  meetingId: null,
+  lastMeetingId: null,
+  meetingEnded: null,
+  totalFaceTime: null,
+  isAuthenticated: null,
+  setAuthToken: () => {},
   setMeetingId: () => {},
-  onMeetingLeave: () => {},
-  getAuthToken: () => {},
-  getMeetingId: () => {},
+  setLastMeetingId: () => {},
+  setMeetingEnded: () => {},
+  setTotalFaceTime: () => {},
+  setIsAuthenticated: () => {},
 });
 
 // Provider component to wrap the app
 export const AppStateProvider = ({ children }) => {
-  const [meetingId, setMeetingId] = useState(null);
   const [authToken, setAuthToken] = useState(null);
+  const [meetingId, setMeetingId] = useState(null);
+  const [lastMeetingId, setLastMeetingId] = useState(null);
   const [meetingEnded, setMeetingEnded] = useState(false);
+  const [totalFaceTime, setTotalFaceTime] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const getAuthToken = async () => {
     const newAuthToken = await fetchToken();
@@ -24,27 +33,35 @@ export const AppStateProvider = ({ children }) => {
   };
 
   const getMeetingId = async () => {
-    const newMeetingId = await createMeeting();
+    const newMeetingId = await createMeeting(authToken);
     setMeetingId(newMeetingId);
   };
 
   const onMeetingLeave = async () => {
+    setLastMeetingId(meetingId);
     setMeetingId(null);
     setMeetingEnded(true);
-    // await fetchMeetingDuration();
   };
 
   return (
     <AppStateContext.Provider
       value={{
-        meetingId,
         authToken,
+        meetingId,
+        lastMeetingId,
         meetingEnded,
+        totalFaceTime,
+        isAuthenticated,
+        setAuthToken,
         setMeetingId,
+        setLastMeetingId,
         setMeetingEnded,
-        onMeetingLeave,
+        setTotalFaceTime,
+        setIsAuthenticated,
+
         getAuthToken,
         getMeetingId,
+        onMeetingLeave,
       }}
     >
       {children}

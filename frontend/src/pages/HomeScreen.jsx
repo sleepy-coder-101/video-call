@@ -7,17 +7,15 @@ import { Button } from "@mui/material";
 
 import { useAppState } from "../context/AppStateContext";
 import JoinScreen from "./JoinScreen";
+import SignInScreen from "./SignInScreen";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
-  const [hasClickedStart, setHasClickedStart] = useState(null);
 
   const { requestPermission } = useMediaDevice();
-  const { getAuthToken } = useAppState();
+  const { isAuthenticated } = useAppState();
 
   const checkCompatibility = () => {
-    setHasClickedStart(true);
-
     const requestMediaPermission = async () => {
       try {
         const requestAudioVideoPermission = await requestPermission(
@@ -30,7 +28,12 @@ const HomeScreen = () => {
     };
 
     requestMediaPermission();
-    navigate("/meeting");
+    if (isAuthenticated) {
+      navigate("/join");
+    } else {
+      navigate("/signin");
+    }
+    // navigate("/meeting");
   };
 
   useEffect(() => {
@@ -42,12 +45,9 @@ const HomeScreen = () => {
     };
 
     loadModels();
-    getAuthToken();
   }, []);
 
-  return hasClickedStart ? (
-    <JoinScreen />
-  ) : (
+  return (
     <Fragment>
       <h1>Welcome to VistaVoice</h1>
       <Button variant="contained" onClick={checkCompatibility}>

@@ -5,12 +5,14 @@ import { useParticipant } from "@videosdk.live/react-sdk";
 import ReactPlayer from "react-player";
 
 import * as faceapi from "face-api.js";
+import { useAppState } from "../context/AppStateContext";
 
 const ParticipantView = (props) => {
   const micRef = useRef(null);
   const videoRef = useRef(null);
 
-  const [totalFaceTime, setTotalFaceTime] = useState(0);
+  // const [totalFaceTime, setTotalFaceTime] = useState(0);
+  const { totalFaceTime, setTotalFaceTime } = useAppState();
 
   const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
     useParticipant(props.participantId);
@@ -55,7 +57,6 @@ const ParticipantView = (props) => {
         if (detection.length > 0) {
           setTotalFaceTime((prevTime) => {
             const updatedTime = prevTime + 1000;
-            props.onFaceTimeUpdate(updatedTime);
             return updatedTime;
           });
         }
