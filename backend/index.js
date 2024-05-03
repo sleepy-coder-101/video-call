@@ -32,9 +32,31 @@ app.use(
 app.use(express.json());
 
 // Routes
+app.post("/webhook", (req, res) => {
+  console.log("Webhook request received");
+
+  const { webhookType, data } = req.body;
+  console.log("Webhook body:", req.body);
+
+  if (webhookType === "session-ended") {
+    const { start, end, meetingId } = data;
+    const startTime = new Date(start);
+    const endTime = new Date(end);
+    const durationInMilliseconds = endTime - startTime;
+    const durationInSeconds = Math.floor(durationInMilliseconds / 1000);
+    console.log("Duration: ", durationInSeconds);
+
+    io.emit("meetingDuration", { duration: durationInSeconds, meetingId });
+
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+// app.use("/webhook", webhookRoutes);
 app.use("/api/meeting", meetingRoutes);
 app.use("/api/users", userRoutes);
-app.use("/webhook", webhookRoutes);
 
 // Socket connection checking
 io.on("connection", (socket) => {

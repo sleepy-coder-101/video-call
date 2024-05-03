@@ -7,11 +7,12 @@ import "./index.css";
 import { AppStateProvider } from "./context/AppStateContext.jsx";
 import App from "./App.jsx";
 import HomeScreen from "./pages/HomeScreen.jsx";
-import MeetingView from "./pages/MeetingView.jsx";
 import MeetingSummary from "./pages/MeetingSummary.jsx";
 import SignInScreen from "./pages/SignInScreen.jsx";
 import SignUpScreen from "./pages/SignUpScreen.jsx";
 import JoinScreen from "./pages/JoinScreen.jsx";
+import Meeting from "./pages/Meeting.jsx";
+import Prejoin from "./pages/Prejoin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,12 +24,16 @@ const router = createBrowserRouter([
         element: <HomeScreen />,
       },
       {
+        path: "/prejoin",
+        element: <Prejoin />,
+      },
+      {
         path: "/join",
         element: <JoinScreen />,
       },
       {
         path: "/meeting",
-        element: <MeetingView />,
+        element: <Meeting />,
       },
       {
         path: "/summary",

@@ -10,10 +10,13 @@ import { Button, Container, TextField } from "@mui/material";
 
 import DropdownEl from "../components/DropdownEl";
 import { useAppState } from "../context/AppStateContext";
+import { useNavigate } from "react-router-dom";
 
 const JoinScreen = () => {
+  const navigate = useNavigate();
+
   var onDeviceChanged = (devices) => {
-    console.log("Devices changed", devices);
+    // console.log("Devices changed", devices);
   };
 
   const { getCameras, getMicrophones, getPlaybackDevices, encoderConfig } =
@@ -46,6 +49,14 @@ const JoinScreen = () => {
 
     getMediaDevices();
   }, [onDeviceChanged]);
+
+  useEffect(() => {
+    const fetchTokenOnRender = async () => {
+      await getAuthToken();
+    };
+
+    fetchTokenOnRender();
+  }, []);
 
   const getMediaTracks = async () => {
     // Get the audio track
@@ -100,15 +111,14 @@ const JoinScreen = () => {
     useAppState();
 
   const onCreateMeeting = async () => {
-    await getAuthToken();
     await getMeetingId();
+    // navigate("/prejoin");
   };
 
   const onJoinMeeting = async () => {
-    await getAuthToken();
-
     const inputMeetingId = meetingIdRef.current.value;
     setMeetingId(inputMeetingId);
+    // navigate("/prejoin");
   };
 
   return (

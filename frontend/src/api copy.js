@@ -1,12 +1,11 @@
 export const fetchToken = async () => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/token`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/meeting/fetch-token`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "ngrok-skip-browser-warning": "true",
         },
       }
     );
@@ -22,7 +21,7 @@ export const fetchToken = async () => {
 export const createMeeting = async (authToken) => {
   try {
     const response = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/meetings`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/meeting/create-room`,
       {
         method: "POST",
         headers: {
@@ -40,7 +39,13 @@ export const createMeeting = async (authToken) => {
   }
 };
 
-export const signupUser = async (username, password, institute, role) => {
+export const signupUser = async (
+  username,
+  email,
+  password,
+  institute,
+  role
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
@@ -51,6 +56,7 @@ export const signupUser = async (username, password, institute, role) => {
         },
         body: JSON.stringify({
           username,
+          email,
           password,
           institute,
           role,
@@ -63,6 +69,31 @@ export const signupUser = async (username, password, institute, role) => {
     return { status: response.status, message: data.message };
   } catch (error) {
     console.error("Error in signing up the user", error);
+    throw error;
+  }
+};
+
+export const signinUser = async (email, password) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+    return { status: response.status, message: data.message };
+  } catch (error) {
+    console.error("Error in signing in the user", error);
     throw error;
   }
 };

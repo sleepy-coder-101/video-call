@@ -16,6 +16,7 @@ const MeetingView = () => {
     onMeetingJoined: () => {
       setJoined("JOINED");
     },
+
     onMeetingLeft: () => {
       onMeetingLeave();
       navigate("/summary");
