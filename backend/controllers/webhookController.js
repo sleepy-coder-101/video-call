@@ -1,4 +1,23 @@
-const io = require("../index");
+const express = require("express");
+const app = express();
+const http = require("http");
+const server = http.createServer(app);
+const io = require("socket.io")(server, {
+  cors: {
+    // origin: [`${process.env.FRONTEND_URL}`],
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
+});
+
+// Socket connection checking
+io.on("connection", (socket) => {
+  console.log("Client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
 
 exports.handleWebhook = async (req, res) => {
   const { webhookType, data } = req.body;

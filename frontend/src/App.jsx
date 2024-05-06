@@ -10,7 +10,7 @@ function App() {
 
   // return <Outlet />;
 
-  return authToken && meetingId ? (
+  return !authToken && meetingId ? (
     <MeetingProvider
       config={{
         meetingId,

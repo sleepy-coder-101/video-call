@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.registerUser = async (req, res) => {
@@ -34,7 +35,21 @@ exports.registerUser = async (req, res) => {
     const savedUser = await newUser.save();
     console.log("The user entered in db: ", savedUser);
 
-    res.status(201).json({ message: "User registered successfully" });
+    // Generate token
+    const token = jwt.sign(
+      {
+        userId: savedUser._id,
+        username: savedUser.username,
+        role: savedUser.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.status(201).json({
+      message: "User registered successfully",
+      token,
+    });
   } catch (error) {
     console.error("Error in creating a new user", error);
     res.status(500).json({ message: "Error in creating a new user" });
@@ -60,8 +75,22 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: "Incorrect password" });
     }
 
+    // Generate a token
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        username: user.username,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
     // Now the email and password are both valid, so sign in the user
-    res.status(200).json({ message: "User logged in successfully" });
+    res.status(200).json({
+      message: "User logged in successfully",
+      token,
+    });
   } catch (error) {
     console.error("Error in logging in user", error);
     res.status(500).json({ meesage: "Error in loggingg in user" });

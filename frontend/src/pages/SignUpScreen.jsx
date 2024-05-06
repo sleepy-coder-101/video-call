@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -11,7 +11,11 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { useAppState } from "../context/AppStateContext";
 import { signupUser } from "../api";
@@ -24,7 +28,7 @@ const SignUpScreen = () => {
   ];
 
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAppState();
+  const { setUserData, checkTokenValidity } = useAppState();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -32,6 +36,15 @@ const SignUpScreen = () => {
   const [institute, setInstitute] = useState(null);
   const [role, setRole] = useState(null);
   const [passwordTouched, setPasswordTouched] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const moveToSignIn = () => {
     navigate("/signin");
@@ -47,27 +60,35 @@ const SignUpScreen = () => {
     console.log("Institute is: ", institute);
     console.log("Role is: ", role);
 
-    //make the post request here
-    const response = await signupUser(
-      username,
-      email,
-      password,
-      institute,
-      role
-    );
-    if (response.status == 201) {
-      setIsAuthenticated(true);
-      navigate("/join");
+    try {
+      //make the post request here
+      const response = await signupUser(
+        username,
+        email,
+        password,
+        institute,
+        role
+      );
+      if (response.status == 201) {
+        console.log(response.token);
+        setUserData(response.token);
+        navigate("/prejoin");
+      } else {
+        console.error("Registeration failed");
+      }
+    } catch (error) {
+      console.error("Error in registering user");
     }
-
-    //clear all the fields
-    // setUsername("");
-    // setEmail("")
-    // setPassword("");
-    // setInstitute(null);
-    // setRole(null);
-    // setPasswordTouched(false);
   };
+
+  useEffect(() => {
+    const isTokenValid = checkTokenValidity();
+    if (!isTokenValid) {
+      navigate("/signup");
+    } else {
+      navigate("/prejoin");
+    }
+  }, []);
 
   const isPasswordValid = password.length >= 8;
   const isFormValid =
@@ -103,7 +124,6 @@ const SignUpScreen = () => {
             label="Enter Name"
             name="username"
             autoComplete="false"
-            autoFocus
             value={username}
             onChange={(e) => {
               setUsername(e.target.value);
@@ -122,7 +142,7 @@ const SignUpScreen = () => {
               setEmail(e.target.value);
             }}
           />
-          <TextField
+          {/* <TextField
             fullWidth
             required
             margin="normal"
@@ -142,7 +162,44 @@ const SignUpScreen = () => {
               !isPasswordValid &&
               "Password must be at least 8 characters long"
             }
+          /> */}
+
+          <TextField
+            fullWidth
+            required
+            margin="normal"
+            id="password"
+            type={showPassword ? "text" : "password"}
+            label="Enter Password"
+            name="password"
+            autoComplete="current-password"
+            onBlur={() => setPasswordTouched(true)}
+            error={passwordTouched && !isPasswordValid}
+            helperText={
+              passwordTouched &&
+              !isPasswordValid &&
+              "Password must be at least 8 characters long"
+            }
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
           <Autocomplete
             disablePortal
             fullWidth

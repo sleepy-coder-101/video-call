@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Menu, MenuItem } from "@mui/material";
+import { Button, Menu, MenuItem, Box } from "@mui/material";
 
 const DropdownEl = ({ array, attribute, onItemChange }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -21,8 +21,14 @@ const DropdownEl = ({ array, attribute, onItemChange }) => {
   };
 
   return (
-    <div>
-      <Button onClick={handleClick}>{attribute}</Button>
+    <Box sx={{ py: "0.2rem" }}>
+      <Button
+        variant="outlined"
+        onClick={handleClick}
+        sx={{ minWidth: { md: "9rem" }, textTransform: "none" }}
+      >
+        {attribute}
+      </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {array.map((arr, index) => (
           <MenuItem key={index} onClick={() => handleData(arr)}>
@@ -30,7 +36,7 @@ const DropdownEl = ({ array, attribute, onItemChange }) => {
           </MenuItem>
         ))}
       </Menu>
-    </div>
+    </Box>
   );
 };
 

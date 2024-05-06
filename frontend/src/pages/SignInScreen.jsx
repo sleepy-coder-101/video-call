@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -10,17 +10,30 @@ import {
   FormControlLabel,
   TextField,
   Typography,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { useAppState } from "../context/AppStateContext";
 import { signinUser } from "../api";
 
 const SignInScreen = () => {
   const navigate = useNavigate();
-  const { setIsAuthenticated } = useAppState();
+  const { setUserData, checkTokenValidity } = useAppState();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const moveToSignUp = () => {
     navigate("/signup");
@@ -36,8 +49,9 @@ const SignInScreen = () => {
     try {
       const response = await signinUser(email, password);
       if (response.status === 200) {
-        setIsAuthenticated(true);
-        navigate("/join");
+        console.log(response.token);
+        setUserData(response.token);
+        navigate("/prejoin");
       } else {
         console.error("Login failed");
       }
@@ -45,6 +59,15 @@ const SignInScreen = () => {
       console.error("Error in logging in user", error);
     }
   };
+
+  useEffect(() => {
+    const isTokenValid = checkTokenValidity();
+    if (!isTokenValid) {
+      navigate("/signin");
+    } else {
+      navigate("/prejoin");
+    }
+  }, []);
 
   const isFormValid = email && password;
 
@@ -83,7 +106,7 @@ const SignInScreen = () => {
             required
             margin="normal"
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             label="Enter Password"
             name="password"
             autoComplete="current-password"
@@ -91,11 +114,26 @@ const SignInScreen = () => {
             onChange={(e) => {
               setPassword(e.target.value);
             }}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
+
           <Box
             sx={{
               display: "flex",
@@ -122,17 +160,6 @@ const SignInScreen = () => {
               my: { xs: "1rem", md: "2rem" },
             }}
           >
-            <Box sx={{ my: { xs: "0.2rem" } }}>
-              <Button
-                sx={{
-                  fontSize: "1rem",
-                  textTransform: "none",
-                  cursor: "pointer",
-                }}
-              >
-                Forgot password?
-              </Button>
-            </Box>
             <Box sx={{ my: { xs: "0.2rem" } }}>
               <Button
                 onClick={moveToSignUp}

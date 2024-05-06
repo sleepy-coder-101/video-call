@@ -66,7 +66,11 @@ export const signupUser = async (
 
     const data = await response.json();
     console.log(data);
-    return { status: response.status, message: data.message };
+    return {
+      status: response.status,
+      message: data.message,
+      token: data.token,
+    };
   } catch (error) {
     console.error("Error in signing up the user", error);
     throw error;
@@ -91,7 +95,12 @@ export const signinUser = async (email, password) => {
 
     const data = await response.json();
     console.log(data);
-    return { status: response.status, message: data.message };
+
+    return {
+      status: response.status,
+      message: data.message,
+      token: data.token,
+    };
   } catch (error) {
     console.error("Error in signing in the user", error);
     throw error;

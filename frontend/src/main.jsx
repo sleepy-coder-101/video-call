@@ -1,10 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 
 import "./index.css";
 
-import { AppStateProvider } from "./context/AppStateContext.jsx";
+import { AppStateProvider, useAppState } from "./context/AppStateContext.jsx";
 import App from "./App.jsx";
 import HomeScreen from "./pages/HomeScreen.jsx";
 import MeetingSummary from "./pages/MeetingSummary.jsx";
@@ -13,6 +17,8 @@ import SignUpScreen from "./pages/SignUpScreen.jsx";
 import JoinScreen from "./pages/JoinScreen.jsx";
 import Meeting from "./pages/Meeting.jsx";
 import Prejoin from "./pages/Prejoin.jsx";
+
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +31,22 @@ const router = createBrowserRouter([
       },
       {
         path: "/prejoin",
-        element: <Prejoin />,
+        // element: (
+        //   <ProtectedRoute>
+        //     <Prejoin />,
+        //   </ProtectedRoute>
+        // ),
+        element: <ProtectedRoute component={Prejoin} />,
+
+        // element: (
+        //   <AppStateProvider>
+        //     {({ user }) => (
+        //       <ProtectedRoute user={user}>
+        //         <Prejoin />
+        //       </ProtectedRoute>
+        //     )}
+        //   </AppStateProvider>
+        // ),
       },
       {
         path: "/join",
@@ -53,6 +74,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AppStateProvider>
+    {/* <AppWrapper /> */}
     <RouterProvider router={router} />
   </AppStateProvider>
 );
