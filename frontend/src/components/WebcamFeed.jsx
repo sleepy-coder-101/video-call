@@ -9,34 +9,43 @@ import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import VideocamIcon from "@mui/icons-material/Videocam";
 
 import DeviceList from "../components/DeviceList";
+import { useAppState } from "../context/AppStateContext";
 
 const WebcamFeed = () => {
   const { requestPermission } = useMediaDevice();
+  const {
+    mediaStream,
+    setMediaStream,
+    toggleMic,
+    toggleWebcam,
+    micOn,
+    webcamOn,
+  } = useAppState();
 
   const videoRef = useRef(null);
-  const [micOn, setMicOn] = useState(false);
-  const [webcamOn, setWebcamOn] = useState(false);
-  const [mediaStream, setMediaStream] = useState(null);
+  // const [micOn, setMicOn] = useState(false);
+  // const [webcamOn, setWebcamOn] = useState(false);
+  // const [mediaStream, setMediaStream] = useState(null);
 
-  const toggleMic = () => {
-    if (mediaStream) {
-      const audioTracks = mediaStream.getAudioTracks();
-      audioTracks.forEach((track) => {
-        track.enabled = !micOn;
-      });
-      setMicOn(!micOn);
-    }
-  };
+  // const toggleMic = () => {
+  //   if (mediaStream) {
+  //     const audioTracks = mediaStream.getAudioTracks();
+  //     audioTracks.forEach((track) => {
+  //       track.enabled = !micOn;
+  //     });
+  //     setMicOn(!micOn);
+  //   }
+  // };
 
-  const toggleWebcam = () => {
-    if (mediaStream) {
-      const videoTracks = mediaStream.getVideoTracks();
-      videoTracks.forEach((track) => {
-        track.enabled = !webcamOn;
-      });
-      setWebcamOn(!webcamOn);
-    }
-  };
+  // const toggleWebcam = () => {
+  //   if (mediaStream) {
+  //     const videoTracks = mediaStream.getVideoTracks();
+  //     videoTracks.forEach((track) => {
+  //       track.enabled = !webcamOn;
+  //     });
+  //     setWebcamOn(!webcamOn);
+  //   }
+  // };
 
   useEffect(() => {
     const requestMediaPermission = async () => {

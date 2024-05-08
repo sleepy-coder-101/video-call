@@ -1,13 +1,10 @@
 import { useState, Fragment, useEffect } from "react";
 import { useMediaDevice } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
-import * as faceapi from "face-api.js";
 
 import { Button } from "@mui/material";
 
 import { useAppState } from "../context/AppStateContext";
-import JoinScreen from "./JoinScreen";
-import SignInScreen from "./SignInScreen";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -28,24 +25,19 @@ const HomeScreen = () => {
     };
 
     requestMediaPermission();
-    if (isAuthenticated) {
-      navigate("/join");
-    } else {
-      navigate("/signin");
-    }
-    // navigate("/meeting");
+    navigate("/signin");
   };
 
-  useEffect(() => {
-    const loadModels = async () => {
-      const model_url = import.meta.env.VITE_MODEL_URL;
-      const newModel = await faceapi.loadTinyFaceDetectorModel(model_url);
+  // useEffect(() => {
+  //   const loadModels = async () => {
+  //     const model_url = import.meta.env.VITE_MODEL_URL;
+  //     const newModel = await faceapi.loadTinyFaceDetectorModel(model_url);
 
-      console.log("Model details: ", faceapi.nets.tinyFaceDetector);
-    };
+  //     console.log("Model details: ", faceapi.nets.tinyFaceDetector);
+  //   };
 
-    loadModels();
-  }, []);
+  //   loadModels();
+  // }, []);
 
   return (
     <Fragment>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import * as faceapi from "face-api.js";
 
 import {
   Container,
@@ -51,6 +52,11 @@ const Prejoin = () => {
     clearUserData();
   };
 
+  const joinRoom = () => {
+    setHasClickedJoin(false);
+    navigate("/meeting");
+  };
+
   const copyToClipboard = () => {
     navigator.clipboard.writeText(meetingId).then(
       () => {
@@ -63,18 +69,19 @@ const Prejoin = () => {
     );
   };
 
-  // useEffect(() => {
-  //   const isTokenValid = checkTokenValidity();
-  //   if (!isTokenValid) {
-  //     navigate("/signin");
-  //   }
-  // }, []);
-
   useEffect(() => {
     const fetchTokenOnRender = async () => {
       await getAuthToken();
     };
 
+    const loadModels = async () => {
+      const model_url = import.meta.env.VITE_MODEL_URL;
+      const newModel = await faceapi.loadTinyFaceDetectorModel(model_url);
+
+      console.log("Model details: ", faceapi.nets.tinyFaceDetector);
+    };
+
+    loadModels();
     fetchTokenOnRender();
   }, []);
 
@@ -162,7 +169,12 @@ const Prejoin = () => {
                 </Tooltip>
               </Box>
 
-              <Button size="large" variant="contained" fullWidth>
+              <Button
+                size="large"
+                variant="contained"
+                fullWidth
+                onClick={joinRoom}
+              >
                 Join Meeting
               </Button>
             </Box>

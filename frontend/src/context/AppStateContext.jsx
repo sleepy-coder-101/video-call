@@ -10,15 +10,17 @@ const AppStateContext = createContext({
   lastMeetingId: null,
   meetingEnded: null,
   totalFaceTime: null,
-  isAuthenticated: null,
   user: null,
+  micOn: null,
+  webcamOn: null,
   setAuthToken: () => {},
   setMeetingId: () => {},
   setLastMeetingId: () => {},
   setMeetingEnded: () => {},
   setTotalFaceTime: () => {},
-  setIsAuthenticated: () => {},
   setUser: () => {},
+  setMicOn: () => {},
+  setWebcamOn: () => {},
 });
 
 // Provider component to wrap the app
@@ -28,8 +30,30 @@ export const AppStateProvider = ({ children }) => {
   const [lastMeetingId, setLastMeetingId] = useState(null);
   const [meetingEnded, setMeetingEnded] = useState(false);
   const [totalFaceTime, setTotalFaceTime] = useState(0);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [micOn, setMicOn] = useState(false);
+  const [webcamOn, setWebcamOn] = useState(false);
+  const [mediaStream, setMediaStream] = useState(null);
+
+  const toggleMic = () => {
+    if (mediaStream) {
+      const audioTracks = mediaStream.getAudioTracks();
+      audioTracks.forEach((track) => {
+        track.enabled = !micOn;
+      });
+      setMicOn(!micOn);
+    }
+  };
+
+  const toggleWebcam = () => {
+    if (mediaStream) {
+      const videoTracks = mediaStream.getVideoTracks();
+      videoTracks.forEach((track) => {
+        track.enabled = !webcamOn;
+      });
+      setWebcamOn(!webcamOn);
+    }
+  };
 
   const checkTokenValidity = () => {
     console.log("This code part is run on refreshes");
@@ -39,22 +63,19 @@ export const AppStateProvider = ({ children }) => {
         const decodedToken = decodeToken(token);
         if (decodedToken) {
           setUser({ username: decodedToken.username, role: decodedToken.role });
-          return true; // Token is valid
+          return true;
         } else {
-          // Clear the token from local storage if it's invalid
           console.error("Invalid token");
           localStorage.removeItem("token");
-          return false; // Token is invalid
+          return false;
         }
       } catch (error) {
-        // Handle error while decoding token
-        // Clear the token from local storage if there's an error
         console.error("Error decoding token:", error);
         localStorage.removeItem("token");
-        return false; // Token is invalid
+        return false;
       }
     }
-    return false; // No token found
+    return false;
   };
 
   const setUserData = (token) => {
@@ -67,12 +88,10 @@ export const AppStateProvider = ({ children }) => {
         setUser({ username: decodedToken.username, role: decodedToken.role });
         localStorage.setItem("token", token);
       } else {
-        // Handle invalid token
         console.error("Invalid token");
       }
     } catch (error) {
       console.error("Error decoding token:", error);
-      // Handle error while decoding token
     }
   };
 
@@ -105,15 +124,19 @@ export const AppStateProvider = ({ children }) => {
         lastMeetingId,
         meetingEnded,
         totalFaceTime,
-        isAuthenticated,
         user,
+        micOn,
+        webcamOn,
+        mediaStream,
         setAuthToken,
         setMeetingId,
         setLastMeetingId,
         setMeetingEnded,
         setTotalFaceTime,
-        setIsAuthenticated,
         setUser,
+        setMicOn,
+        setWebcamOn,
+        setMediaStream,
 
         getAuthToken,
         getMeetingId,
@@ -121,6 +144,8 @@ export const AppStateProvider = ({ children }) => {
         setUserData,
         clearUserData,
         checkTokenValidity,
+        toggleMic,
+        toggleWebcam,
       }}
     >
       {children}

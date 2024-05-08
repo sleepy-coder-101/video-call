@@ -8,9 +8,7 @@ import MeetingView from "./pages/MeetingView";
 function App() {
   const { meetingId, authToken } = useAppState();
 
-  // return <Outlet />;
-
-  return authToken && meetingId ? (
+  return !authToken && meetingId ? (
     <MeetingProvider
       config={{
         meetingId,

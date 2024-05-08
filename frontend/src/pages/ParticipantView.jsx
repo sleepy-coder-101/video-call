@@ -102,8 +102,8 @@ const ParticipantView = (props) => {
             // url={videoRef}
             //
             style={{ transform: "scaleX(-1)" }}
-            height={"200px"}
-            width={"300px"}
+            // height={"200px"}
+            // width={"300px"}
             onError={(err) => {
               console.log(err, "participant video error");
             }}

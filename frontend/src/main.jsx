@@ -15,10 +15,10 @@ import MeetingSummary from "./pages/MeetingSummary.jsx";
 import SignInScreen from "./pages/SignInScreen.jsx";
 import SignUpScreen from "./pages/SignUpScreen.jsx";
 import JoinScreen from "./pages/JoinScreen.jsx";
-import Meeting from "./pages/Meeting.jsx";
 import Prejoin from "./pages/Prejoin.jsx";
 
 import ProtectedRoute from "./ProtectedRoute.jsx";
+import MeetingContainer from "./pages/MeetingContainer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -31,22 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/prejoin",
-        // element: (
-        //   <ProtectedRoute>
-        //     <Prejoin />,
-        //   </ProtectedRoute>
-        // ),
         element: <ProtectedRoute component={Prejoin} />,
-
-        // element: (
-        //   <AppStateProvider>
-        //     {({ user }) => (
-        //       <ProtectedRoute user={user}>
-        //         <Prejoin />
-        //       </ProtectedRoute>
-        //     )}
-        //   </AppStateProvider>
-        // ),
       },
       {
         path: "/join",
@@ -54,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/meeting",
-        element: <Meeting />,
+        element: <ProtectedRoute component={MeetingContainer} />,
       },
       {
         path: "/summary",

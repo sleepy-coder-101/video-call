@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import { useAppState } from "../context/AppStateContext";
 import { useNavigate } from "react-router-dom";
@@ -25,58 +25,25 @@ const MeetingView = () => {
     join();
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      joinMeeting();
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <Box
-      sx={{
-        flex: 1,
-        overflow: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        p: 4,
-      }}
-    >
-      <Typography variant="h4" sx={{ mb: 4 }}>
+    <Box sx={{ flex: 1, overflow: "auto" }}>
+      <Typography variant="h5" sx={{ mb: 2 }}>
         Meeting ID: {meetingId}
       </Typography>
-
-      {joined === "JOINED" ? (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            gap: 2,
-          }}
-        >
+      {joined && joined === "JOINED" ? (
+        <Box>
           {[...participants.keys()].map((participantId) => (
             <ParticipantView
-              key={participantId}
               participantId={participantId}
+              key={participantId}
             />
           ))}
         </Box>
-      ) : joined === "JOINING" ? (
-        <Typography variant="body1" sx={{ mt: 4 }}>
-          Joining the meeting...
-        </Typography>
+      ) : joined && joined === "JOINING" ? (
+        <Typography variant="body1">Joining the meeting...</Typography>
       ) : (
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          // onClick={joinMeeting}
-          sx={{ mt: 4 }}
-        >
-          Join Meeting
+        <Button variant="contained" onClick={joinMeeting}>
+          Join
         </Button>
       )}
     </Box>
