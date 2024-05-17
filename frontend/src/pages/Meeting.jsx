@@ -1,25 +1,15 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { useMeeting } from "@videosdk.live/react-sdk";
 import { useAppState } from "../context/AppStateContext";
 import { useNavigate } from "react-router-dom";
-
-import {
-  Box,
-  Typography,
-  Button,
-  Container,
-  CssBaseline,
-  CircularProgress,
-} from "@mui/material";
-
+import { Box, Typography, CssBaseline, CircularProgress } from "@mui/material";
 import ParticipantView from "./ParticipantView";
 import MeetingControls from "../components/MeetingControls";
 
-const MeetingView = () => {
+const Meeting = () => {
   const navigate = useNavigate();
   const [joined, setJoined] = useState(null);
   const { meetingId, onMeetingLeave } = useAppState();
-
   const { join, participants } = useMeeting({
     onMeetingJoined: () => {
       setJoined("JOINED");
@@ -39,62 +29,62 @@ const MeetingView = () => {
     const timer = setTimeout(() => {
       joinMeeting();
     }, 100);
-
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <Box>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <CssBaseline />
-      <Box
-        sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
-      >
-        {joined === "JOINED" ? (
-          <Fragment>
-            <Box
-              sx={{
-                flex: 1,
-                overflow: "auto",
-                alignItems: "center",
-                justifyContent: "center",
-                display: "flex",
-
-                // display: "grid",
-                // gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-                // gap: 2,
-                // p: 2,
-              }}
-            >
-              {[...participants.keys()].map((participantId) => (
-                <ParticipantView
-                  key={participantId}
-                  participantId={participantId}
-                />
-              ))}
-            </Box>
-            <Box>
-              <MeetingControls />
-            </Box>
-          </Fragment>
-        ) : joined === "JOINING" ? (
+      {joined === "JOINED" ? (
+        <>
           <Box
             sx={{
+              flex: 1,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
               flexWrap: "wrap",
-              minHeight: "100vh",
+              justifyContent: "center",
+              alignItems: "center",
+              p: 2,
             }}
           >
-            <Typography variant="h4" sx={{ pr: "2rem" }}>
-              Joining the meeting
-            </Typography>
-            <CircularProgress />
+            {[...participants.keys()].map((participantId) => (
+              <Box
+                key={participantId}
+                sx={{
+                  flex: participants.size === 1 ? "0 0 auto" : 1,
+                  width: participants.size === 1 ? "auto" : "50%",
+                  height: participants.size === 1 ? "auto" : "100%",
+                  maxWidth: participants.size === 1 ? "80%" : "100%",
+                  maxHeight: participants.size === 1 ? "80%" : "100%",
+                  p: 1,
+                }}
+              >
+                <ParticipantView participantId={participantId} />
+              </Box>
+            ))}
           </Box>
-        ) : null}
-      </Box>
+          <Box sx={{ flexShrink: 0 }}>
+            <MeetingControls />
+          </Box>
+        </>
+      ) : joined === "JOINING" ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            minHeight: "100vh",
+          }}
+        >
+          <Typography variant="h4" sx={{ pr: "1.5rem" }}>
+            Joining the meeting
+          </Typography>
+          <CircularProgress />
+        </Box>
+      ) : null}
     </Box>
   );
 };
 
-export default MeetingView;
+export default Meeting;

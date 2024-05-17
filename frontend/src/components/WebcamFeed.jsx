@@ -2,7 +2,7 @@ import { Fragment, useRef, useState, useEffect } from "react";
 
 import { useMediaDevice } from "@videosdk.live/react-sdk";
 
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import MicIcon from "@mui/icons-material/Mic";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";

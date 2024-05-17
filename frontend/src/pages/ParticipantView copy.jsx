@@ -1,13 +1,19 @@
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo, useEffect, useState, Fragment } from "react";
+
 import { useParticipant } from "@videosdk.live/react-sdk";
+
 import ReactPlayer from "react-player";
-import { Box } from "@mui/material";
+
 import * as faceapi from "face-api.js";
 import { useAppState } from "../context/AppStateContext";
 
 const ParticipantView = (props) => {
   const micRef = useRef(null);
+  const videoRef = useRef(null);
+
+  // const [totalFaceTime, setTotalFaceTime] = useState(0);
   const { totalFaceTime, setTotalFaceTime } = useAppState();
+
   const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
     useParticipant(props.participantId);
 
@@ -24,6 +30,7 @@ const ParticipantView = (props) => {
       if (micOn && micStream) {
         const mediaStream = new MediaStream();
         mediaStream.addTrack(micStream.track);
+
         micRef.current.srcObject = mediaStream;
         micRef.current
           .play()
@@ -38,15 +45,15 @@ const ParticipantView = (props) => {
 
   useEffect(() => {
     let intervalId;
+
     const detectFaces = async () => {
-      if (webcamOn && isLocal) {
-        const videoElement = document.createElement("video");
-        videoElement.srcObject = videoStream;
-        await videoElement.play();
+      if (videoRef.current && webcamOn && isLocal) {
+        const videoElement = videoRef.current.getInternalPlayer();
         const detection = await faceapi.detectAllFaces(
           videoElement,
           new faceapi.TinyFaceDetectorOptions()
         );
+
         if (detection.length > 0) {
           setTotalFaceTime((prevTime) => {
             const updatedTime = prevTime + 1000;
@@ -65,33 +72,45 @@ const ParticipantView = (props) => {
         clearInterval(intervalId);
       }
     };
-  }, [webcamOn, isLocal, videoStream]);
+  }, [webcamOn, props.onFaceTimeUpdate, isLocal]);
 
   return (
-    <Box
-      key={props.participantId}
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-      }}
-    >
+    <div key={props.participantId}>
+      {/* <p>
+        Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
+        {micOn ? "ON" : "OFF"}
+      </p> */}
       <audio ref={micRef} autoPlay muted={isLocal} />
       {webcamOn && (
-        <ReactPlayer
-          url={videoStream}
-          playing={true}
-          muted={true}
-          width="100%"
-          height="100%"
-          style={{ transform: "scaleX(-1)", objectFit: "cover" }}
-          onError={(err) => {
-            console.log(err, "participant video error");
-          }}
-        />
+        <Fragment>
+          {/* {isLocal && (
+            <p>
+              Total face detection time: {Math.floor(totalFaceTime / 1000)}{" "}
+              seconds
+            </p>
+          )} */}
+          <ReactPlayer
+            ref={videoRef}
+            // playsinline // very very imp prop
+            pip={false}
+            light={false}
+            controls={false}
+            muted={true}
+            playing={true}
+            //
+            url={videoStream}
+            // url={videoRef}
+            //
+            style={{ transform: "scaleX(-1)" }}
+            // height={"200px"}
+            // width={"300px"}
+            onError={(err) => {
+              console.log(err, "participant video error");
+            }}
+          />
+        </Fragment>
       )}
-    </Box>
+    </div>
   );
 };
 

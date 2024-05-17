@@ -59,7 +59,8 @@ const DeviceList = () => {
     try {
       const customVideoStream = await createCameraVideoTrack({
         cameraId: selectedWebcamId,
-        encoderConfig: encoderConfig ? encoderConfig : "h540p_w960p",
+        // encoderConfig: encoderConfig ? encoderConfig : "h540p_w960p",
+        encoderConfig: encoderConfig ? encoderConfig : "h1080p_w1920p",
         optimizationMode: "motion",
         multiStream: false,
       });
