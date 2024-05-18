@@ -210,7 +210,7 @@ const Prejoin = () => {
               </Typography>
 
               {/* only teachers can create meetings */}
-              {/* {user.role === "teacher" && (
+              {user.role === "teacher" && (
                 <Box sx={{ flexBasis: "100%", my: "0.9rem" }}>
                   <Button
                     size="large"
@@ -221,9 +221,10 @@ const Prejoin = () => {
                     Create a Meeting
                   </Button>
                 </Box>
-              )} */}
+              )}
 
-              <Box sx={{ flexBasis: "100%", my: "0.9rem" }}>
+              {/* Teacher and Student both can create meeting */}
+              {/* <Box sx={{ flexBasis: "100%", my: "0.9rem" }}>
                 <Button
                   size="large"
                   variant="contained"
@@ -232,7 +233,7 @@ const Prejoin = () => {
                 >
                   Create a Meeting
                 </Button>
-              </Box>
+              </Box> */}
               <Box sx={{ flexBasis: "100%", my: "0.9rem" }}>
                 <Button
                   size="large"
