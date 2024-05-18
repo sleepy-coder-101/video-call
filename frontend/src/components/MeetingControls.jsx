@@ -83,10 +83,10 @@ const MeetingControls = () => {
           size="large"
           sx={{
             ml: "1rem",
-            backgroundColor: "red",
+            backgroundColor: "#EE4B2B",
             color: "white",
             "&:hover": {
-              backgroundColor: "blue",
+              backgroundColor: "red",
             },
           }}
         >

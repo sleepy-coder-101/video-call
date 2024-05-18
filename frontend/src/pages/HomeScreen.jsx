@@ -1,8 +1,8 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMediaDevice } from "@videosdk.live/react-sdk";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 
 import { useAppState } from "../context/AppStateContext";
 
@@ -28,24 +28,42 @@ const HomeScreen = () => {
     navigate("/signin");
   };
 
-  // useEffect(() => {
-  //   const loadModels = async () => {
-  //     const model_url = import.meta.env.VITE_MODEL_URL;
-  //     const newModel = await faceapi.loadTinyFaceDetectorModel(model_url);
-
-  //     console.log("Model details: ", faceapi.nets.tinyFaceDetector);
-  //   };
-
-  //   loadModels();
-  // }, []);
-
   return (
-    <Fragment>
-      <h1>Welcome to VistaVoice</h1>
-      <Button variant="contained" onClick={checkCompatibility}>
-        Start Now
-      </Button>
-    </Fragment>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Box sx={{ textAlign: "center", marginBottom: 4 }}>
+        <Typography variant="h2" sx={{ mb: "2rem" }}>
+          Welcome to VistaVoice
+        </Typography>
+        <Typography variant="h4" sx={{ mb: "2rem" }}>
+          {/* Where Learning Meets Face-to-Face! */}
+          Where Face-to-Face Learning is Reimagined!
+        </Typography>
+        <Typography variant="h6" sx={{ maxWidth: "800px" }}>
+          Connect with educators and classmates like never before. Our
+          cutting-edge face detection technology ensures an immersive and
+          engaging video calling experience tailored for educational
+          environments. Tap "Start Now" to begin your video calls
+        </Typography>
+      </Box>
+      <Box>
+        <Button
+          size="large"
+          variant="contained"
+          fullWidth
+          onClick={checkCompatibility}
+        >
+          Start Now
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

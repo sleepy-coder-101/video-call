@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 
-import { Button } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 
 import { socket } from "../socket";
 import { useAppState } from "../context/AppStateContext";
@@ -39,23 +39,73 @@ const MeetingSummary = () => {
   const faceTime = Math.floor(totalFaceTime / 1000);
   const attendanceScore = Math.round((faceTime / meetingDuration) * 1000) / 10;
 
+  const isAttendanceGranted = attendanceScore > 50 ? true : false;
+
   return (
-    <div>
-      <h1>Meeting Summary</h1>
-      <p>Meeting Id: {lastMeetingId}</p>
-      <p>Total Face Detection Time: {faceTime} seconds</p>
-      {meetingDuration !== null ? (
-        <>
-          <p>Total Meeting Duration: {meetingDuration} seconds</p>
-          <h2>Your Attendance Score: {attendanceScore}%</h2>
-        </>
-      ) : (
-        <p>Fetching meeting duration...</p>
-      )}
-      <Button variant="contained" onClick={onGoHome}>
-        Go to Home Page
-      </Button>
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "100vh",
+      }}
+    >
+      <Box sx={{ textAlign: "center", mb: "4rem" }}>
+        <Typography variant="h3" sx={{ mb: "3rem" }}>
+          Meeting Summary
+        </Typography>
+        <Typography variant="h4" sx={{ mb: "2rem" }}>
+          Meeting Id: {lastMeetingId}
+        </Typography>
+        <Typography variant="h5" gutterBottom>
+          Face Detection Time: {faceTime} seconds
+        </Typography>
+
+        {meetingDuration !== null ? (
+          <Fragment>
+            <Typography variant="h5" gutterBottom>
+              Total Meeting Duration: {meetingDuration} seconds
+            </Typography>
+            <Typography variant="h5" gutterBottom>
+              Your Attendance Score: {attendanceScore}%
+            </Typography>
+            {isAttendanceGranted ? (
+              <Typography variant="h6" sx={{ mt: "2rem", maxWidth: "500px" }}>
+                Well done! Your participation earned you attendance for this
+                session. Your attendance was accepted.
+              </Typography>
+            ) : (
+              <Typography variant="h6" sx={{ mt: "2rem", maxWidth: "550px" }}>
+                You haven't met the minimum attendance requirements for today's
+                session. Please be more attentive during classes.
+              </Typography>
+            )}
+          </Fragment>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+              mt: "2rem",
+            }}
+          >
+            <Typography variant="h6" sx={{ p: "1rem" }}>
+              Fetching Meeting Details
+            </Typography>
+            <CircularProgress />
+          </Box>
+        )}
+      </Box>
+
+      <Box>
+        <Button size="large" variant="contained" fullWidth onClick={onGoHome}>
+          Go to Home Page
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

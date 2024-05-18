@@ -75,6 +75,7 @@ const ParticipantView = (props) => {
         width: "100%",
         height: "100%",
         overflow: "hidden",
+        borderRadius: "1rem",
       }}
     >
       <audio ref={micRef} autoPlay muted={isLocal} />
@@ -85,7 +86,10 @@ const ParticipantView = (props) => {
           muted={true}
           width="100%"
           height="100%"
-          style={{ transform: "scaleX(-1)", objectFit: "cover" }}
+          style={{
+            transform: "scaleX(-1)",
+            objectFit: "cover",
+          }}
           onError={(err) => {
             console.log(err, "participant video error");
           }}
