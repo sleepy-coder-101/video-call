@@ -19,9 +19,7 @@ const MeetingSummary = () => {
   const [meetingDuration, setMeetingDuration] = useState(null);
 
   socket.on("meetingDuration", (data) => {
-    console.log("The Meeting i was in had meeting id: ", lastMeetingId);
     const { duration, meetingId } = data;
-    console.log(`Meeting ${meetingId} duration: ${duration} seconds`);
     // Update your frontend state or perform any other necessary actions
     if (lastMeetingId === meetingId) {
       setMeetingDuration(duration);

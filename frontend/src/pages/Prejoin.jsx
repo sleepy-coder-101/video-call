@@ -77,8 +77,6 @@ const Prejoin = () => {
     const loadModels = async () => {
       const model_url = import.meta.env.VITE_MODEL_URL;
       const newModel = await faceapi.loadTinyFaceDetectorModel(model_url);
-
-      console.log("Model details: ", faceapi.nets.tinyFaceDetector);
     };
 
     loadModels();

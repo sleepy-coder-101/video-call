@@ -65,7 +65,6 @@ export const signupUser = async (
     );
 
     const data = await response.json();
-    console.log(data);
     return {
       status: response.status,
       message: data.message,
@@ -94,7 +93,6 @@ export const signinUser = async (email, password) => {
     );
 
     const data = await response.json();
-    console.log(data);
 
     return {
       status: response.status,

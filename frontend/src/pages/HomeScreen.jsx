@@ -18,7 +18,6 @@ const HomeScreen = () => {
         const requestAudioVideoPermission = await requestPermission(
           "audio_video"
         );
-        console.log("Permission requested for: ", requestAudioVideoPermission);
       } catch (error) {
         console.error("Error in requesting Audio Video Permission", error);
       }

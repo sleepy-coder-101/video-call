@@ -41,15 +41,10 @@ const SignInScreen = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("The form got submitted");
-
-    console.log("Email is: ", email);
-    console.log("Password is: ", password);
 
     try {
       const response = await signinUser(email, password);
       if (response.status === 200) {
-        console.log(response.token);
         setUserData(response.token);
         navigate("/prejoin");
       } else {

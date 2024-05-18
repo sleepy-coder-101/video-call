@@ -56,7 +56,6 @@ export const AppStateProvider = ({ children }) => {
   };
 
   const checkTokenValidity = () => {
-    console.log("This code part is run on refreshes");
     const token = localStorage.getItem("token");
     if (token) {
       try {
@@ -82,9 +81,6 @@ export const AppStateProvider = ({ children }) => {
     try {
       const decodedToken = decodeToken(token);
       if (decodedToken) {
-        console.log(decodedToken);
-        console.log(decodedToken.username);
-        console.log(decodedToken.role);
         setUser({ username: decodedToken.username, role: decodedToken.role });
         localStorage.setItem("token", token);
       } else {

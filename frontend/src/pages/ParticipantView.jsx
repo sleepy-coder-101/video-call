@@ -91,7 +91,7 @@ const ParticipantView = (props) => {
             objectFit: "cover",
           }}
           onError={(err) => {
-            console.log(err, "participant video error");
+            console.error(err, "participant video error");
           }}
         />
       )}

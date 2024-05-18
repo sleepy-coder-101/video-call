@@ -52,13 +52,6 @@ const SignUpScreen = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("The form got submitted");
-
-    console.log("Username is: ", username);
-    console.log("Email is: ", email);
-    console.log("Password is: ", password);
-    console.log("Institute is: ", institute);
-    console.log("Role is: ", role);
 
     try {
       //make the post request here
@@ -70,7 +63,6 @@ const SignUpScreen = () => {
         role
       );
       if (response.status == 201) {
-        console.log(response.token);
         setUserData(response.token);
         navigate("/prejoin");
       } else {

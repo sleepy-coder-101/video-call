@@ -52,7 +52,6 @@ const WebcamFeed = () => {
       try {
         const reqAudio = await requestPermission("audio");
         const reqVideo = await requestPermission("video");
-        console.log("Permission requested for: ", reqAudio, reqVideo);
       } catch (error) {
         console.error("Error in requesting permissions");
       }

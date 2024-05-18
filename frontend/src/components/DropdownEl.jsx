@@ -15,7 +15,6 @@ const DropdownEl = ({ array, attribute, onItemChange }) => {
   };
 
   const handleData = (arr) => {
-    // console.log(arr.deviceId);
     onItemChange(arr.deviceId);
     setAnchorEl(null);
   };

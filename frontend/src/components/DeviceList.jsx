@@ -10,9 +10,7 @@ import { Box } from "@mui/material";
 import DropdownEl from "./DropdownEl";
 
 const DeviceList = () => {
-  var onDeviceChanged = (devices) => {
-    // console.log("Devices changed", devices);
-  };
+  var onDeviceChanged = (devices) => {};
 
   const { getCameras, getMicrophones, getPlaybackDevices, encoderConfig } =
     useMediaDevice({ onDeviceChanged });
@@ -50,7 +48,6 @@ const DeviceList = () => {
       });
       const audioTracks = customAudioStream?.getAudioTracks();
       const audioTrack = audioTracks.length ? audioTracks[0] : null;
-      console.log("Audio track: ", audioTrack);
     } catch (err) {
       console.error("Error in getting audio track", err);
     }
@@ -66,27 +63,22 @@ const DeviceList = () => {
       });
       const videoTracks = customVideoStream?.getVideoTracks();
       const videoTrack = videoTracks.length ? videoTracks[0] : null;
-      console.log("Video track: ", videoTrack);
     } catch (err) {
       console.error("Error in getting video track", err);
     }
   };
 
   const handleMicChange = (micID) => {
-    console.log("MicrophoneID: ", micID);
     setSelectedMicId(micID);
     getMediaTracks();
   };
 
   const handleWebcamChange = (webcamID) => {
-    console.log(webcamID);
     setSelectedWebcamId(webcamID);
     getMediaTracks();
   };
 
-  const handleSpeakerChange = (speakerID) => {
-    console.log(speakerID);
-  };
+  const handleSpeakerChange = (speakerID) => {};
 
   return (
     <Box
