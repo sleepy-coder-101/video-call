@@ -1,4 +1,10 @@
-# Video Calling Application with Face Detection
+# 📹 Video Calling Application with Face Detection
+
+<p align="center">
+  <img src="/images/banner.png" />
+</p>
+
+![GitHub Repo stars](https://img.shields.io/github/stars/sleepy-coder-101/video-call?logo=Apache%20Spark&style=for-the-badge) ![GitHub repo size](https://img.shields.io/github/repo-size/sleepy-coder-101/video-call?logo=Files&style=for-the-badge) ![GitHub issues](https://img.shields.io/github/issues/sleepy-coder-101/video-call?logo=github&style=for-the-badge) ![GitHub forks](https://img.shields.io/github/forks/sleepy-coder-101/video-call?logo=forgejo&style=for-the-badge) ![GitHub last commit](https://img.shields.io/github/last-commit/sleepy-coder-101/video-call?logo=GitHub&style=for-the-badge)
 
 This is a video calling application specifically designed for educational institutions. It provides a platform for conducting online classes with features like face detection-based attendance tracking, user authentication, and role-based access control.
 
@@ -22,16 +28,16 @@ This is a video calling application specifically designed for educational instit
 
 ## Screenshots
 
-![Homescreen](screenshots/Homescreen.png)
+![Homescreen](images/Homescreen.png)
 _Homescreen_
 
-![Sign In Screen](screenshots/Sign%20In%20Filled.png)
+![Sign In Screen](images/Sign%20In%20Filled.png)
 _Sign In Screen_
 
-![Sign Up Screen](screenshots/Sign%20Up%20Filled.png)
+![Sign Up Screen](images/Sign%20Up%20Filled.png)
 _Sign Up Screen_
 
-![Meeting Summary Screen](screenshots/Meeting%20Summary%20user%201.png)
+![Meeting Summary Screen](images/Meeting%20Summary%20user%201.png)
 _Meeting Summary Screen_
 
 ## Contributing
